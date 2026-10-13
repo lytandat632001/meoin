@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /bao-gia?*
+
+Sitemap: https://meoin.pages.dev/sitemap-index.xml

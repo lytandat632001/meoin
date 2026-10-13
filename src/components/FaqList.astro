@@ -1,0 +1,107 @@
+---
+import { faqs } from "../config/site";
+---
+
+<section class="section">
+  <div class="container container-narrow">
+    <div class="section-head">
+      <h2>Câu hỏi thường gặp</h2>
+      <p>Những thắc mắc phổ biến khi đặt in lần đầu.</p>
+    </div>
+
+    <div class="faq-list">
+      {faqs.map((item, i) => (
+        <details class="faq-item" open={i === 0}>
+          <summary>
+            <span>{item.q}</span>
+            <span class="faq-icon" aria-hidden="true"></span>
+          </summary>
+          <p>{item.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .faq-item {
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+    overflow: hidden;
+  }
+
+  .faq-item[open] {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .faq-item summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    font-weight: 600;
+    font-size: var(--text-base);
+    cursor: pointer;
+    padding: var(--space-5) var(--space-6);
+    list-style: none;
+    color: var(--color-text);
+    transition: color var(--transition-fast);
+  }
+
+  .faq-item summary::-webkit-details-marker { display: none; }
+
+  .faq-item summary:hover {
+    color: var(--color-primary);
+  }
+
+  .faq-icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    position: relative;
+    transition: transform var(--transition-base);
+  }
+
+  .faq-icon::before,
+  .faq-icon::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: var(--color-primary);
+    border-radius: 2px;
+    transform: translate(-50%, -50%);
+  }
+
+  .faq-icon::before {
+    width: 14px;
+    height: 2px;
+  }
+
+  .faq-icon::after {
+    width: 2px;
+    height: 14px;
+    transition: transform var(--transition-base);
+  }
+
+  .faq-item[open] .faq-icon::after {
+    transform: translate(-50%, -50%) rotate(90deg);
+    opacity: 0;
+  }
+
+  .faq-item p {
+    padding: 0 var(--space-6) var(--space-5);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    line-height: 1.7;
+  }
+</style>

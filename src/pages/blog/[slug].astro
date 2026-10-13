@@ -1,0 +1,219 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const formattedDate = post.data.pubDate.toLocaleDateString("vi-VN", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+});
+---
+
+<BaseLayout title={`${post.data.title} — Mẹo In`} description={post.data.description}>
+  <div class="breadcrumb-wrap">
+    <div class="container container-narrow">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Trang chủ</a>
+        <span>/</span>
+        <a href="/blog">Blog</a>
+        <span>/</span>
+        <span class="current">{post.data.title}</span>
+      </nav>
+    </div>
+  </div>
+
+  <article class="post">
+    <div class="container container-narrow">
+      <header class="post-header">
+        <div class="post-meta">
+          <time datetime={post.data.pubDate.toISOString()}>{formattedDate}</time>
+          {post.data.author && (
+            <>
+              <span class="dot">·</span>
+              <span>{post.data.author}</span>
+            </>
+          )}
+        </div>
+        <h1>{post.data.title}</h1>
+        {post.data.description && (
+          <p class="post-description">{post.data.description}</p>
+        )}
+        {post.data.tags.length > 0 && (
+          <div class="post-tags">
+            {post.data.tags.map((t) => <span class="badge">{t}</span>)}
+          </div>
+        )}
+      </header>
+
+      <div class="post-content">
+        <Content />
+      </div>
+
+      <div class="post-cta">
+        <div class="post-cta-icon">🐱</div>
+        <h3>Cần tư vấn về sản phẩm in ấn?</h3>
+        <p>Mèo sẽ giúp bạn chọn đúng chất liệu và quy cách phù hợp.</p>
+        <a href="/bao-gia" class="btn btn-primary btn-lg">Yêu cầu báo giá</a>
+      </div>
+
+      <div class="post-back">
+        <a href="/blog" class="btn btn-ghost">← Xem tất cả bài viết</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .breadcrumb-wrap {
+    background: var(--color-bg-soft);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .post { padding: var(--space-10) 0 var(--space-16); }
+
+  .post-header {
+    margin-bottom: var(--space-10);
+    padding-bottom: var(--space-8);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-5);
+    font-weight: 500;
+  }
+
+  .dot { opacity: 0.5; }
+
+  .post-header h1 {
+    margin-bottom: var(--space-5);
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  }
+
+  .post-description {
+    font-size: var(--text-lg);
+    color: var(--color-text-soft);
+    line-height: 1.65;
+    margin-bottom: var(--space-5);
+  }
+
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  /* Nội dung Markdown */
+  .post-content :global(h2) {
+    margin-top: var(--space-12);
+    margin-bottom: var(--space-4);
+    font-size: var(--text-2xl);
+    padding-bottom: var(--space-3);
+    border-bottom: 2px solid var(--color-primary-light);
+  }
+
+  .post-content :global(h3) {
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-3);
+    font-size: var(--text-xl);
+  }
+
+  .post-content :global(p) {
+    margin-bottom: var(--space-5);
+    line-height: 1.8;
+    color: var(--color-text-soft);
+    font-size: var(--text-base);
+  }
+
+  .post-content :global(ul),
+  .post-content :global(ol) {
+    margin: var(--space-4) 0 var(--space-6);
+    padding-left: var(--space-6);
+  }
+
+  .post-content :global(li) {
+    margin-bottom: var(--space-3);
+    line-height: 1.75;
+    color: var(--color-text-soft);
+  }
+
+  .post-content :global(strong) {
+    color: var(--color-text);
+    font-weight: 700;
+  }
+
+  .post-content :global(a) {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .post-content :global(img) {
+    border-radius: var(--radius-lg);
+    margin: var(--space-6) 0;
+    box-shadow: var(--shadow-md);
+  }
+
+  .post-content :global(blockquote) {
+    border-left: 4px solid var(--color-primary);
+    padding: var(--space-4) var(--space-6);
+    background: var(--color-primary-light);
+    margin: var(--space-6) 0;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    color: var(--color-text-soft);
+    font-style: italic;
+  }
+
+  .post-content :global(code) {
+    background: var(--color-bg-muted);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: var(--color-primary-dark);
+  }
+
+  /* CTA */
+  .post-cta {
+    margin-top: var(--space-16);
+    padding: var(--space-10) var(--space-8);
+    background: linear-gradient(135deg, #eff6ff, #fff7ed);
+    border-radius: var(--radius-xl);
+    text-align: center;
+    border: 1px solid var(--color-border);
+  }
+
+  .post-cta-icon {
+    font-size: 3rem;
+    margin-bottom: var(--space-3);
+  }
+
+  .post-cta h3 {
+    margin-bottom: var(--space-3);
+    font-size: var(--text-xl);
+  }
+
+  .post-cta p {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-6);
+  }
+
+  .post-back {
+    margin-top: var(--space-10);
+    text-align: center;
+  }
+</style>

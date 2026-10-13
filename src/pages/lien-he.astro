@@ -1,0 +1,186 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../config/site";
+
+const contacts = [
+  {
+    icon: "📞",
+    label: "Điện thoại",
+    value: site.phoneDisplay,
+    href: `tel:${site.phone}`,
+    external: false,
+  },
+  {
+    icon: "💬",
+    label: "Zalo",
+    value: "Chat qua Zalo",
+    href: `https://zalo.me/${site.zalo}`,
+    external: true,
+  },
+  {
+    icon: "✉️",
+    label: "Email",
+    value: site.email,
+    href: `mailto:${site.email}`,
+    external: false,
+  },
+];
+---
+
+<BaseLayout
+  title="Liên hệ — Mẹo In"
+  description="Liên hệ tư vấn in ấn: gọi điện, nhắn Zalo hoặc gửi email."
+>
+  <section class="contact-hero">
+    <div class="container">
+      <span class="badge">🐱 Liên hệ</span>
+      <h1>Liên hệ với Mẹo In</h1>
+      <p>Chọn cách thuận tiện nhất để được tư vấn nhanh chóng.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container-narrow">
+      <div class="contact-grid">
+        {contacts.map((c) => (
+          <a
+            href={c.href}
+            class="contact-card"
+            target={c.external ? "_blank" : undefined}
+            rel={c.external ? "noopener" : undefined}
+          >
+            <div class="contact-icon">{c.icon}</div>
+            <div class="contact-info">
+              <span class="contact-label">{c.label}</span>
+              <span class="contact-value">{c.value}</span>
+            </div>
+            <span class="contact-arrow" aria-hidden="true">→</span>
+          </a>
+        ))}
+      </div>
+
+      <div class="contact-cta">
+        <h2>Hoặc gửi yêu cầu báo giá</h2>
+        <p>Điền form để mô tả nhu cầu chi tiết — tôi sẽ liên hệ lại trong thời gian sớm nhất.</p>
+        <a href="/bao-gia" class="btn btn-primary btn-lg">Yêu cầu báo giá</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-hero {
+    padding: var(--space-16) 0 var(--space-12);
+    background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+    text-align: center;
+  }
+
+  .contact-hero h1 {
+    margin: var(--space-4) 0 var(--space-3);
+  }
+
+  .contact-hero p {
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+  }
+
+  .contact-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .contact-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    padding: var(--space-5) var(--space-6);
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    color: var(--color-text);
+    transition: all var(--transition-base);
+  }
+
+  .contact-card:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    color: var(--color-text);
+  }
+
+  .contact-icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-primary-light);
+    border-radius: var(--radius-md);
+    font-size: 1.6rem;
+    flex-shrink: 0;
+    transition: all var(--transition-base);
+  }
+
+  .contact-card:hover .contact-icon {
+    background: var(--color-primary);
+    transform: scale(1.05);
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+  }
+
+  .contact-label {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .contact-value {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .contact-arrow {
+    color: var(--color-primary);
+    font-weight: 700;
+    font-size: var(--text-xl);
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: all var(--transition-base);
+  }
+
+  .contact-card:hover .contact-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .contact-cta {
+    margin-top: var(--space-12);
+    padding: var(--space-10) var(--space-8);
+    background: linear-gradient(135deg, #eff6ff, #fff7ed);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    text-align: center;
+  }
+
+  .contact-cta h2 {
+    margin-bottom: var(--space-3);
+    font-size: var(--text-2xl);
+  }
+
+  .contact-cta p {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-6);
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>
