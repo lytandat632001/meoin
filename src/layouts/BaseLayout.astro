@@ -17,8 +17,9 @@ const {
   image = "/og-default.svg",
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || site.siteUrl);
-const ogImage = new URL(image, Astro.site || site.siteUrl);
+const PRIMARY_DOMAIN = "https://meoin.pages.dev";
+const canonicalURL = PRIMARY_DOMAIN + Astro.url.pathname;
+const ogImage = PRIMARY_DOMAIN + image;
 ---
 
 <!DOCTYPE html>
